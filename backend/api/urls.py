@@ -9,4 +9,5 @@ urlpatterns = [
     path('purchase/accept/<int:file_id>/', PurchaseAcceptRequest.as_view()),
     path('technical/encrypt/<int:file_id>/', TechnicalEncryptView.as_view()),
     path('production/download/<int:file_id>/', ProductionDownloadView.as_view()),
+    path('token/', CustomTokenView.as_view(), name='token_obtain_pair'),
 ]

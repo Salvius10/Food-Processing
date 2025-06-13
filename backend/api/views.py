@@ -7,6 +7,10 @@ from .serializers import UserSerializer, VendorFileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from cryptography.fernet import Fernet
 from django.core.files.base import ContentFile
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import CustomUser
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -82,3 +86,18 @@ class ProductionDownloadView(APIView):
         encrypted_data = vfile.encrypted_file.read()
         decrypted_data = fernet.decrypt(encrypted_data)
         return Response({'file_content': decrypted_data.decode()})
+    
+
+
+class CustomTokenView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        user = CustomUser.objects.filter(username=username).first()
+
+        if not user:
+            return Response({'error': 'User not found'}, status=404)
+
+        if not user.is_approved:
+            return Response({'error': 'Not approved by admin yet'}, status=403)
+
+        return super().post(request, *args, **kwargs)

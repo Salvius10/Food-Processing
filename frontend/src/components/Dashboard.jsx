@@ -5,7 +5,7 @@ export default function Dashboard() {
     <div className="container mt-5">
       <div className="card p-4 shadow-sm">
         <h3 className="text-center">Dashboard</h3>
-        <p className="text-muted text-center">Welcome! Role-specific actions will appear here after full implementation.</p>
+        <p className="text-muted text-center">Welcome! </p>
       </div>
     </div>
   );

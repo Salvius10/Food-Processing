@@ -10,6 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
+        validated_data['is_active'] = True  
+        validated_data['is_approved'] = False
+
         return super().create(validated_data)
 
 class VendorFileSerializer(serializers.ModelSerializer):

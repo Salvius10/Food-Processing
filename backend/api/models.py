@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
         ('admin', 'Admin')
     ]
     role = models.CharField(max_length=20, choices=ROLES)
+    is_active = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
 
 class VendorFile(models.Model):

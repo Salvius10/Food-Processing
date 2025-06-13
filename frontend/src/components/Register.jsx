@@ -11,11 +11,14 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/register/', form);
-      alert('Registration successful. Wait for admin approval.');
-    } catch (err) {
-      alert('Registration failed.');
-    }
+  await axios.post('/api/register/', form);
+  alert('Registration successful. Wait for admin approval.');
+} catch (err) {
+  console.error("Backend error:", err.response?.data);
+  alert("Registration failed.");
+}
+
+
   };
 
   return (

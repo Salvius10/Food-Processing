@@ -11,7 +11,9 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post('/api/token/', { username, password });
-      localStorage.setItem('token', res.data.access);
+      localStorage.setItem("access", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
+
       navigate('/dashboard');
     } catch (err) {
       alert('Login failed. Check credentials or approval status.');
