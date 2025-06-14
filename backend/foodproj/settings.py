@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'api',
     'corsheaders',
+    "purchase",
+    "production",
+    "technical",
+    "adminpanel",
 ]
 
 REST_FRAMEWORK = {
@@ -146,3 +150,4 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-disposition',
 ]
+AUTH_USER_MODEL = 'api.CustomUser'

@@ -11,6 +11,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import CustomUser
+import pandas as pd
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import VendorFile
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -101,3 +109,39 @@ class CustomTokenView(TokenObtainPairView):
             return Response({'error': 'Not approved by admin yet'}, status=403)
 
         return super().post(request, *args, **kwargs)
+    
+
+class PurchaseViewDataset(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, file_id):
+        try:
+            vfile = VendorFile.objects.get(id=file_id)
+
+            if not vfile.request_accepted:
+                return Response({'error': 'Request not accepted yet'}, status=403)
+
+            df = pd.read_csv(vfile.file.path)
+            return Response({'data': df.to_dict(orient='records')})
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=400)
+        
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "id": request.user.id,
+            "username": request.user.username,
+            "email": request.user.email,
+            "role": request.user.role,
+            "is_approved": request.user.is_approved
+        })
+
+class VendorFileListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        files = VendorFile.objects.filter(user=request.user)
+        return Response(VendorFileSerializer(files, many=True).data)

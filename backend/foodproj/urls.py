@@ -24,4 +24,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('', lambda request: redirect('/admin/')),
+    path('api/purchase/', include('purchase.urls')),
+    path('api/technical/', include('technical.urls')),
+    path('api/production/', include('production.urls')),
+    path('api/final-approval/', include('adminpanel.urls')),
+
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
